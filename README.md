@@ -78,3 +78,4 @@ Add screenshots here later.
 
 Example:
 
+![alt text](image.png)
