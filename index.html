@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crypto Tracker</title>
+  </head>
+  <body>
+    <div class="page-noise"></div>
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb orb--pink"></div>
+    <div class="bg-orb orb orb--lime"></div>
+    <div class="bg-orb orb orb--violet"></div>
+    <div id="cursorGlow" class="cursor-glow"></div>
+
+    <div class="ticker-wrap">
+      <div id="tickerTrack" class="ticker-track"></div>
+    </div>
+
+    <div class="app">
+      <div class="container">
+        <header class="hero glass" id="heroCard">
+          <div class="hero__content">
+            <p class="hero__badge">Final Portfolio Edition</p>
+            <h1 class="title">Crypto Tracker</h1>
+            <p class="subtitle">
+              Преміальний crypto dashboard з watchlist, compare mode, темами,
+              анімаціями, графіками та деталями по кожній монеті.
+            </p>
+
+            <div class="hero__actions">
+              <button id="refreshBtn" class="action-btn action-btn--primary magnetic-btn">
+                Оновити ринок
+              </button>
+
+              <button id="scrollToCoinsBtn" class="action-btn action-btn--ghost magnetic-btn">
+                До монет
+              </button>
+
+              <button id="themeToggleBtn" class="action-btn action-btn--ghost magnetic-btn">
+                Змінити тему
+              </button>
+            </div>
+          </div>
+
+          <div class="hero__stats">
+            <div class="stat-box glass">
+              <span class="stat-box__label">Монет</span>
+              <strong id="coinsCount">0</strong>
+            </div>
+
+            <div class="stat-box glass">
+              <span class="stat-box__label">Favorites</span>
+              <strong id="favoritesCount">0</strong>
+            </div>
+
+            <div class="stat-box glass">
+              <span class="stat-box__label">Оновлено</span>
+              <strong id="lastUpdate">--:--</strong>
+            </div>
+          </div>
+        </header>
+
+        <section class="overview-grid">
+          <div class="overview-card glass">
+            <p class="overview-card__label">Найбільший gain</p>
+            <h3 id="topGainerName">--</h3>
+            <p id="topGainerValue" class="overview-card__value">--</p>
+            <div class="overview-bar">
+              <span id="topGainerBar"></span>
+            </div>
+          </div>
+
+          <div class="overview-card glass">
+            <p class="overview-card__label">Найбільший loss</p>
+            <h3 id="topLoserName">--</h3>
+            <p id="topLoserValue" class="overview-card__value negative-text">--</p>
+            <div class="overview-bar overview-bar--pink">
+              <span id="topLoserBar"></span>
+            </div>
+          </div>
+
+          <div class="overview-card glass">
+            <p class="overview-card__label">Середній 24h рух</p>
+            <h3>Market Pulse</h3>
+            <p id="avgChangeValue" class="overview-card__value">--</p>
+            <div class="overview-bar overview-bar--violet">
+              <span id="avgChangeBar"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="toolbar glass">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="text"
+            placeholder="Пошук по назві або символу..."
+          />
+
+          <select id="sortSelect" class="sort-select">
+            <option value="default">Сортування</option>
+            <option value="price-desc">Ціна ↓</option>
+            <option value="price-asc">Ціна ↑</option>
+            <option value="marketcap-desc">Market Cap ↓</option>
+            <option value="marketcap-asc">Market Cap ↑</option>
+            <option value="change-desc">24h ↓</option>
+            <option value="change-asc">24h ↑</option>
+            <option value="rank-asc">Rank ↑</option>
+          </select>
+
+          <button id="favoritesOnlyBtn" class="action-btn action-btn--ghost magnetic-btn">
+            Тільки favorites
+          </button>
+
+          <button id="layoutToggleBtn" class="action-btn action-btn--ghost magnetic-btn">
+            Grid / List
+          </button>
+        </section>
+
+        <section class="filters">
+          <button class="filter-btn active" data-filter="all">Усі</button>
+          <button class="filter-btn" data-filter="favorites">Favorites</button>
+          <button class="filter-btn" data-filter="gainers">Top Gainers</button>
+          <button class="filter-btn" data-filter="losers">Top Losers</button>
+        </section>
+
+        <section class="compare-panel glass">
+          <div class="compare-panel__header">
+            <div>
+              <h3>Compare mode</h3>
+              <p>Обери дві монети та порівняй ключові метрики</p>
+            </div>
+            <button id="clearCompareBtn" class="action-btn action-btn--ghost magnetic-btn">
+              Очистити compare
+            </button>
+          </div>
+
+          <div class="compare-panel__selectors">
+            <select id="compareSelectA" class="sort-select">
+              <option value="">Перша монета</option>
+            </select>
+
+            <select id="compareSelectB" class="sort-select">
+              <option value="">Друга монета</option>
+            </select>
+          </div>
+
+          <div id="compareResult" class="compare-result"></div>
+        </section>
+
+        <section class="content-layout">
+          <aside class="sidebar glass">
+            <div class="sidebar__header">
+              <h3>Watchlist</h3>
+              <p>Обрані токени</p>
+            </div>
+
+            <div id="watchlist" class="watchlist"></div>
+          </aside>
+
+          <main class="main-content">
+            <section id="statusBox" class="status-box glass"></section>
+            <section id="coinsList" class="coins-list"></section>
+          </main>
+        </section>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div id="coinModal" class="modal">
+      <div class="modal__backdrop" id="modalBackdrop"></div>
+
+      <div class="modal__content glass">
+        <button id="closeModalBtn" class="modal__close">✕</button>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>
